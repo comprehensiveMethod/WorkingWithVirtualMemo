@@ -1,9 +1,14 @@
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.ref.SoftReference;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        Menu_xd();
+    }
+    public static void Menu_xd() throws IOException {
         Scanner scanner = new Scanner(System.in);
         int index,element,pageIndex;
         MemoUsage memoUsage = new MemoUsage("src/1000.dat");
@@ -25,32 +30,52 @@ public class Main {
             char ch = (char)System.in.read();
             switch(ch){
                 case '1':
-                    System.out.println("Write down the page");
-                    pageIndex = scanner.nextInt();
-                    System.out.println("Write down the number of element");
-                    index = scanner.nextInt();
-                    System.out.println("the element is:");
                     try {
-                        memoUsage.readElement(index,pageIndex);
-                    }catch (Exception e){
-                        System.out.println("Error: "+e.getMessage());
+                        System.out.println("Write down the page");
+                        pageIndex = scanner.nextInt();
+                        System.out.println("Write down the number of element");
+                        index = scanner.nextInt();
+                        System.out.println("the element is:");
+                        try {
+                            memoUsage.readElement(index, pageIndex);
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }catch (InputMismatchException e) {
+                        System.out.println("Error: Буквы не цифры");
                     }
                     break;
                 case '2':
-                    System.out.println("Write down the page");
-                    pageIndex = scanner.nextInt();
-                    System.out.println("Write down the index of element");
-                    index = scanner.nextInt();
-                    System.out.println("Now write the element that will be placed instead of current element:");
-                    element = scanner.nextInt();
-                    memoUsage.SetElement(element,index,pageIndex);
+                    try {
+                        System.out.println("Write down the page");
+                        pageIndex = scanner.nextInt();
+                        System.out.println("Write down the index of element");
+                        index = scanner.nextInt();
+                        System.out.println("Now write the element that will be placed instead of current element:");
+                        element = scanner.nextInt();
+                        try {
+                            memoUsage.SetElement(element, index, pageIndex);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }catch (InputMismatchException e) {
+                        System.out.println("Error: Буквы не цифры");
+                    }
                     break;
                 case '3':
-                    System.out.println("Write down the page");
-                    pageIndex = scanner.nextInt();
-                    System.out.println("Write down the index of element");
-                    index = scanner.nextInt();
-                    memoUsage.RemoveAt(index,pageIndex);
+                    try {
+                        System.out.println("Write down the page");
+                        pageIndex = scanner.nextInt();
+                        System.out.println("Write down the index of element");
+                        index = scanner.nextInt();
+                        try {
+                            memoUsage.RemoveAt(index, pageIndex);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }catch (InputMismatchException e) {
+                        System.out.println("Error: Буквы не цифры");
+                    }
                     break;
                 case '9':
                     memoUsage.close();
@@ -59,11 +84,5 @@ public class Main {
                     break;
             }
         }
-
-
-
-
-
-
     }
 }

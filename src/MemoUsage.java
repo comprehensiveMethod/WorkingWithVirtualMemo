@@ -1,4 +1,5 @@
 import java.io.*;
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -77,7 +78,9 @@ public class MemoUsage {
     }
     public void readElement(int index,int pageIndex) throws Exception {
         readPage(pageIndex);
-
+        if(index<0||index>127){
+            throw new Exception("В странице 128 элементов");
+        }
         if (bMap[index] == false)
 
             throw new Exception("Пустая ячейка");
@@ -86,19 +89,36 @@ public class MemoUsage {
 
             System.out.println(arr[index]);
     }
-    public void SetElement(int element, int index,int pageIndex) throws IOException {
-
+    public void SetElement(int element, int index,int pageIndex) throws Exception {
+        if(index<0||index>127){
+            throw new Exception("В странице 128 элементов");
+        }
         readPage(pageIndex);
 
-        arr[index] = element;
+        if(arr[index]!= 0){
+            System.out.println("В ячейке уже находится значение, перезаписать?\n 1 - yes \n anything different - no");
+            char c = (char)System.in.read();
+            switch(c){
+                case '1':
+                    arr[index] = element;
+                    bMap[index] = true;
+                    writePage();
+                    break;
+                default:
+                    System.out.println("Отмена");
+                    break;
 
-        bMap[index] = true;
+            }
+        }
 
-        writePage();
+
 
     }
-    public void RemoveAt(int index, int pageIndex) throws IOException {
+    public void RemoveAt(int index, int pageIndex) throws Exception {
 
+        if(index<0||index>127){
+            throw new Exception("В странице 128 элементов");
+        }
         readPage(pageIndex);
 
         bMap[index] = false;
